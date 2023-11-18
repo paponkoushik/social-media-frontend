@@ -23,7 +23,7 @@
         <button @click="postTweet">Post</button>
       </div>
       <div v-if="activeTab === 'tab1'">
-        <tweets :tweets="forYouTweets" />
+        <tweets :tweets="suggestTweets" />
       </div>
       <div v-else-if="activeTab === 'tab2'">
         <tweets :tweets="followingTweets" />
@@ -42,15 +42,14 @@ export default {
   data() {
     return {
       activeTab: 'tab1',
-      forYouTweets: [
-        { id: 1, username: 'User1', content: 'This is a tweet for you!' },
-      ],
-      followingTweets: [
-        { id: 1, username: 'User2', content: 'This is a tweet from someone you are following!' },
-      ],
+      suggestTweets: [],
+      followingTweets: [],
       content: '',
       errors:'',
     };
+  },
+  created() {
+    this.getSuggestTweets()
   },
   methods: {
     setActiveTab: function (tab) {
@@ -60,7 +59,10 @@ export default {
     postTweet() {
       if (this.content.length) {
         axios.post('tweet', {content: this.content}).then(response => {
-          console.log(response)
+          if (response.status == '201') {
+            this.activeTab === 'tab1' ? this.getSuggestTweets() : this.getFollowingTweets();
+          }
+
           this.resetForm();
         }).catch(({response}) =>{
           this.errors = response.data.errors;
@@ -73,15 +75,13 @@ export default {
     getFollowingTweets() {
       axios.get('following-tweets').then(response => {
         this.followingTweets = response.data.data
-        console.log(response)
       }).catch(({response}) =>{
         this.errors = response.data.errors;
       })
     },
     getSuggestTweets() {
       axios.get('suggest-tweets').then(response => {
-        // this.followingTweets = response.data
-        console.log(response)
+        this.suggestTweets = response.data.data
       }).catch(({response}) =>{
         this.errors = response.data.errors;
       })
