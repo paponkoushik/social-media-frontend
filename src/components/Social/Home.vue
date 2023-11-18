@@ -19,7 +19,7 @@
 
     <main>
       <div class="post-section">
-        <textarea v-model="newTweet" placeholder="What's happening?"></textarea>
+        <textarea v-model="content" placeholder="What's happening?"></textarea>
         <button @click="postTweet">Post</button>
       </div>
       <div v-if="activeTab === 'tab1'">
@@ -34,6 +34,7 @@
 
 <script>
 import Tweets from "./Tweets.vue";
+import axios from "axios";
 
 export default {
   name: "Home",
@@ -47,15 +48,43 @@ export default {
       followingTweets: [
         { id: 1, username: 'User2', content: 'This is a tweet from someone you are following!' },
       ],
-      newTweet: ''
+      content: '',
+      errors:'',
     };
   },
   methods: {
-    setActiveTab(tab) {
+    setActiveTab: function (tab) {
       this.activeTab = tab;
+      this.activeTab === 'tab1' ? this.getSuggestTweets() : this.getFollowingTweets();
     },
     postTweet() {
-      console.log('calling')
+      if (this.content.length) {
+        axios.post('tweet', {content: this.content}).then(response => {
+          console.log(response)
+          this.resetForm();
+        }).catch(({response}) =>{
+          this.errors = response.data.errors;
+        })
+      }
+    },
+    resetForm() {
+      this.content = ''
+    },
+    getFollowingTweets() {
+      axios.get('following-tweets').then(response => {
+        this.followingTweets = response.data.data
+        console.log(response)
+      }).catch(({response}) =>{
+        this.errors = response.data.errors;
+      })
+    },
+    getSuggestTweets() {
+      axios.get('suggest-tweets').then(response => {
+        // this.followingTweets = response.data
+        console.log(response)
+      }).catch(({response}) =>{
+        this.errors = response.data.errors;
+      })
     }
   },
 }
