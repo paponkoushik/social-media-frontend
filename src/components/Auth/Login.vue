@@ -41,7 +41,10 @@ export default {
     }),
     submit() {
       this.login(this.user).then(() => {
-        // this.$router.replace({name: 'home'})
+        if (! this.loginFailed) {
+          console.log('calling')
+          this.$router.replace({name: 'home'})
+        }
       });
     }
   }

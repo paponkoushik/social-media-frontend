@@ -4,6 +4,7 @@ import {routes} from "./router/index";
 import VueRouter from "vue-router";
 import store from "./store/index";
 import "bootstrap/dist/css/bootstrap.min.css";
+import '@fortawesome/fontawesome-free/css/all.css';
 import axios from "axios";
 
 require('./store/subscriber');
