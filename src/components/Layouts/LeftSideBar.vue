@@ -1,5 +1,5 @@
 <template>
-  <aside class="main-left-sidebar">
+  <aside v-if="store.getters['Auth/authenticated']" class="main-left-sidebar">
     <div class="logo">
       <img src="../../assets/logo.png" alt="Twitter Logo">
     </div>
@@ -31,6 +31,11 @@ export default {
         { id: 8, label: 'More', icon: 'fas fa-ellipsis-h' },
       ],
     };
+  },
+  computed: {
+    store() {
+      return this.$store;
+    },
   },
   methods: {
     ...mapActions({

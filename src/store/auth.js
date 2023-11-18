@@ -34,14 +34,8 @@ export default {
                 let response = await axios.post('auth/login', credentials)
                 return dispatch('attempt', response.data.token);
             } catch (e) {
-                // console.log(e)
                 commit('SET_LOGIN_FAILED', true)
-                // this.loginFailed = true;
-                // console.log(this.loginFailed)
             }
-            // let response = await axios.post('auth/login', credentials)
-            // console.log(response)
-            // return dispatch('attempt', response.data.token);
         },
 
         async attempt({commit, state}, token) {

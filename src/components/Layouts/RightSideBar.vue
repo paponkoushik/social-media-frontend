@@ -1,5 +1,5 @@
 <template>
-  <aside class="right-sidebar">
+  <aside v-if="store.getters['Auth/authenticated']" class="right-sidebar">
     <div class="search-input">
       <input type="text" placeholder="Search...">
       <i class="fas fa-search"></i>
@@ -12,6 +12,7 @@
 </template>
 
 <script>
+
 export default {
   name: "RightSideBar",
   data() {
@@ -28,6 +29,11 @@ export default {
         { id: 2, title: 'Card 2', description: 'Description for Card 2' },
       ],
     };
+  },
+  computed: {
+    store() {
+      return this.$store;
+    },
   },
 }
 </script>
