@@ -62,7 +62,7 @@ export default {
     },
     selectResult(result) {
       console.log('Selected result:', result);
-      this.isActive = false; // Hide the dropdown after selecting a result
+      this.isActive = false;
     }
   }
 }
