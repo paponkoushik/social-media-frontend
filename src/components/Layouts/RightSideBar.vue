@@ -8,10 +8,10 @@
 
       <div v-if="isActive" class="search-results">
         <div class="user-card" v-for="(result, index) in searchResults" :key="index" @click="selectResult(result)">
-          <img src="../../assets/logo.png" alt="User Avatar" class="user-avatar">
-          <div class="user-details">
-            <span class="user-name">{{ result.username }}</span>
-          </div>
+            <img src="../../assets/logo.png" alt="User Avatar" class="user-avatar">
+            <div class="user-details">
+              <span class="user-name">{{ result.username }}</span>
+            </div>
         </div>
       </div>
     </div>
@@ -61,10 +61,10 @@ export default {
       this.isActive = !this.isActive;
     },
     selectResult(result) {
-      console.log('Selected result:', result);
+      this.$router.replace(`/profile/${result.id}`)
       this.isActive = false;
     }
-  }
+  },
 }
 </script>
 

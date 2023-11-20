@@ -51,20 +51,24 @@ export default {
     },
   },
   mounted() {
-    if (! this.id) {
-      this.userInfo = this.$store.getters['Auth/user']
-      return
-    }
-
-    axios.get(`get-user-info/${this.id}`)
-      .then(response => {
-        this.userInfo = response.data;
-      })
-      .catch(error => {
-        console.error('Error fetching data:', error);
-      });
+    this.getUserInfo()
   },
   methods: {
+    getUserInfo() {
+      if (! this.id) {
+        this.userInfo = this.$store.getters['Auth/user']
+        return
+      }
+
+      axios.get(`get-user-info/${this.id}`)
+        .then(response => {
+          this.userInfo = response.data.data[0];
+          console.log(this.userInfo)
+        })
+        .catch(error => {
+          console.error('Error fetching data:', error);
+        });
+    },
     followersPage() {
       if (this.id) {
         this.$router.push(`/followers/${this.id}`)
@@ -77,7 +81,12 @@ export default {
       }
       this.$router.push(`/following`)
     }
-  }
+  },
+  watch: {
+    '$route.path': function () {
+      this.getUserInfo()
+    },
+  },
 }
 </script>
 
