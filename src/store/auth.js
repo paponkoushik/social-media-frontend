@@ -22,7 +22,7 @@ export default {
             state.token = token;
         },
         SET_USER_INFO(state, data) {
-            state.user = data;
+            state.user = data.data[0];
         },
         SET_LOGIN_FAILED(state, value) {
             state.loginFailed = value;

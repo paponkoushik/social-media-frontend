@@ -6,7 +6,9 @@
     <div class="sidebar-items">
       <div v-for="item in sidebarItems" :key="item.id" class="sidebar-item">
         <i :class="item.icon"></i>
-        {{ item.label }}
+        <router-link :to="item.url">
+          {{ item.label }}
+        </router-link>
       </div>
     </div>
     <button @click.prevent="logout" class="logout-button">Logout</button>
@@ -21,14 +23,8 @@ export default {
   data() {
     return {
       sidebarItems: [
-        { id: 1, label: 'Home', icon: 'fas fa-home' },
-        { id: 2, label: 'Explore', icon: 'fas fa-hashtag' },
-        { id: 3, label: 'Notifications', icon: 'fas fa-bell' },
-        { id: 4, label: 'Messages', icon: 'fas fa-envelope' },
-        { id: 5, label: 'Bookmarks', icon: 'fas fa-bookmark' },
-        { id: 6, label: 'Lists', icon: 'fas fa-list-alt' },
-        { id: 7, label: 'Profile', icon: 'fas fa-user-alt' },
-        { id: 8, label: 'More', icon: 'fas fa-ellipsis-h' },
+        { id: 1, label: 'Home', icon: 'fas fa-home', url: '/home'},
+        { id: 7, label: 'Profile', icon: 'fas fa-user-alt', url: '/profile'},
       ],
     };
   },

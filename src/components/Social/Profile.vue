@@ -1,29 +1,44 @@
 <template>
-  <div class="profile-header">
-    <img src="../../assets/logo.png" alt="Profile Picture" class="avatar">
-    <div class="user-info">
-<!--      <h2>{{ user.name }}</h2>-->
-      <h2>Koushik</h2>
-      <p>@{{ userInfo.username }}</p>
-<!--      <p>Koushik</p>-->
-<!--      <p>Joined {{ user.joinDate }}</p>-->
-      <p>Date</p>
-      <p>
-<!--        <strong>{{ user.followers }}</strong> Followers-->
-        <strong>10</strong> Followers
-        <span class="divider"></span>
-<!--        <strong>{{ user.following }}</strong> Following-->
-        <strong>20</strong> Following
-      </p>
+  <div>
+    <div class="profile-header">
+      <img src="../../assets/logo.png" alt="Profile Picture" class="avatar">
+      <div class="user-info">
+        <!--      <h2>{{ user.name }}</h2>-->
+        <h2>{{ userInfo.username || '' }}</h2>
+        <p>@{{ userInfo.username || '' }}</p>
+        <p>Joined {{ userInfo.created_at }}</p>
+        <p>
+          <a v-if="userInfo.followers"
+             href="#"
+             @click.prevent="followersPage()"
+          >
+            <strong>
+              {{ userInfo.followers.length }}
+            </strong> Followers
+          </a>
+          <span class="divider"></span>
+          <a
+            v-if="userInfo.following"
+            href="#"
+            @click.prevent="followingPage()">
+            <strong>
+              {{ userInfo.following.length }}
+            </strong> Following
+          </a>
+        </p>
+      </div>
     </div>
+    <tweets :tweets="userInfo.tweets" />
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import Tweets from "./Tweets.vue";
 
 export default {
   name: "Profile",
+  components: {Tweets},
   props: ['id'],
   data() {
     return {
@@ -48,6 +63,20 @@ export default {
       .catch(error => {
         console.error('Error fetching data:', error);
       });
+  },
+  methods: {
+    followersPage() {
+      if (this.id) {
+        this.$router.push(`/followers/${this.id}`)
+      }
+      this.$router.push(`/followers`)
+    },
+    followingPage() {
+      if (this.id) {
+        this.$router.push(`/following/${this.id}`)
+      }
+      this.$router.push(`/following`)
+    }
   }
 }
 </script>
