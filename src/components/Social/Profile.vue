@@ -96,7 +96,7 @@ export default {
 </script>
 
 <style scoped>
-/* Add your custom styles for the profile header */
+
 .profile-header {
   display: flex;
   align-items: center;
