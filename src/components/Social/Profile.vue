@@ -63,7 +63,6 @@ export default {
       axios.get(`get-user-info/${this.id}`)
         .then(response => {
           this.userInfo = response.data.data[0];
-          console.log(this.userInfo)
         })
         .catch(error => {
           console.error('Error fetching data:', error);

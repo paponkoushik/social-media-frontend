@@ -39,8 +39,8 @@ export default {
         tweet.likes.length ++;
       }
       tweet.liked = !tweet.liked
-      axios.post(`tweet/${tweet.id}/like`).then(response => {
-        console.log(response)
+      axios.post(`tweet/${tweet.id}/like`).then(() => {
+
       }).catch(({response}) =>{
         this.errors = response.data.errors;
       })

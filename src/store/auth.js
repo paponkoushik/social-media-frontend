@@ -6,6 +6,7 @@ export default {
         token: null,
         user: null,
         loginFailed: false,
+        refreshFailed: false,
     },
     getters: {
         authenticated(state) {
@@ -19,16 +20,34 @@ export default {
     },
     mutations: {
         SET_TOKEN(state, token) {
-            state.token = token;
+            if (token !== 'token_black_listed') {
+                state.token = token;
+            }
         },
         SET_USER_INFO(state, data) {
-            state.user = data.data[0];
+            state.user = data ? data.data[0] : null
         },
         SET_LOGIN_FAILED(state, value) {
             state.loginFailed = value;
         },
+        SET_REFRESH_FAILED(state, value) {
+            state.refreshFailed = value;
+        },
     },
     actions: {
+        async refresh({ dispatch, commit }, token) {
+            try {
+                let response = await axios.post('auth/refresh', token)
+                if (! response.data.success && response.data.status === 'Token Expired') {
+                    return dispatch('attempt', response.data.token);
+                }
+
+            } catch (e) {
+                commit('SET_REFRESH_FAILED', true)
+                commit('SET_TOKEN', 'token_black_listed')
+                commit('SET_USER_INFO', null)
+            }
+        },
         async login({ dispatch, commit }, credentials) {
             try {
                 let response = await axios.post('auth/login', credentials)

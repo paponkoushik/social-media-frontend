@@ -13,7 +13,7 @@ export const routes = [
     beforeEnter: (to, from, next) => {
       if (store.getters['Auth/authenticated']) {
         return next({
-          name: 'products'
+          name: 'home'
         });
       }
       next();

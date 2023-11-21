@@ -33,16 +33,25 @@ export default {
     }
   },
   computed: {
-    ...mapState('Auth', ['loginFailed']),
+    ...mapState('Auth', ['loginFailed', 'refreshFailed']),
+  },
+  mounted() {
+    if (this.$store.state["Auth/token"] !== '') {
+      this.refresh(this.$store.state["Auth/token"]).then(() => {
+        if (! this.refreshFailed) {
+          this.$router.replace({name: 'home'})
+        }
+      })
+    }
   },
   methods: {
     ...mapActions({
-      login: 'Auth/login'
+      login: 'Auth/login',
+      refresh: 'Auth/refresh'
     }),
     submit() {
       this.login(this.user).then(() => {
         if (! this.loginFailed) {
-          console.log('calling')
           this.$router.replace({name: 'home'})
         }
       });
