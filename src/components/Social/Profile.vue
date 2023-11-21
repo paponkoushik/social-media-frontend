@@ -69,16 +69,22 @@ export default {
         });
     },
     followersPage() {
-      if (this.id) {
-        this.$router.push(`/followers/${this.id}`)
-      }
-      this.$router.push(`/followers`)
+      this.$router.push({
+        name: 'followers',
+        params: {
+          ...(this.id && { id: this.id }),
+          followers: this.userInfo.followers
+        }
+      });
     },
     followingPage() {
-      if (this.id) {
-        this.$router.push(`/following/${this.id}`)
-      }
-      this.$router.push(`/following`)
+      this.$router.push({
+        name: 'following',
+        params: {
+          ...(this.id && {id: this.id}),
+          following: this.userInfo.following
+        }
+      });
     }
   },
   watch: {

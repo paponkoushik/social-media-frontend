@@ -2,30 +2,35 @@
   <div class="followers-list">
     <h2 class="section-title">Following List</h2>
     <ul class="followers-container">
-      <li v-for="follower in followers" :key="follower.id" class="follower-item">
+      <li v-for="follower in following" :key="follower.id" class="follower-item">
         <img src="../../assets/logo.png" alt="Follower Avatar" class="follower-avatar">
         <div class="follower-info">
           <p class="follower-name">{{ follower.username }}</p>
-          <p class="follower-username">@{{ follower.username }}</p>
+          <p class="follower-username">{{ follower.created_at }}</p>
         </div>
-        <button class="follow-button">Follow</button>
+        <template v-if="store.getters['Auth/user'].id  !== follower.id">
+          <button v-if="follower.is_followed_by_auth_user"
+                  @click.prevent="unFollow(follower)"
+                  class="follow-button">Unfollow</button>
+          <button v-else
+                  class="follow-button"
+                  @click.prevent="follow(follower)"
+          >Follow</button>
+        </template>
       </li>
     </ul>
   </div>
 </template>
 
 <script>
+import {FollowUnfollowMixin} from "../../Mixins/FollowUnfollowMixin";
+
 export default {
   name: "Following",
-  props:['id'],
+  props:['id', 'following'],
+  mixins:[FollowUnfollowMixin],
   data() {
-    return {
-      followers: [
-        { id: 1, name: 'Follower 1', username: 'follower1', avatar: 'path/to/avatar1.jpg' },
-        { id: 2, name: 'Follower 2', username: 'follower2', avatar: 'path/to/avatar2.jpg' },
-        { id: 3, name: 'Follower 3', username: 'follower3', avatar: 'path/to/avatar3.jpg' },
-      ],
-    };
+    return {};
   },
 }
 </script>
@@ -33,6 +38,7 @@ export default {
 <style scoped>
 .followers-list {
   margin: 20px auto;
+  padding: 15px;
 }
 
 .section-title {
@@ -42,7 +48,7 @@ export default {
 
 .followers-container {
   list-style: none;
-  padding: 0;
+  padding: 15px;
 }
 
 .follower-item {

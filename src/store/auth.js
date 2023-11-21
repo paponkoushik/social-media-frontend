@@ -86,6 +86,16 @@ export default {
                 commit('SET_TOKEN', null)
                 commit('SET_USER_INFO', null)
             })
+        },
+
+        async getAuthInfo({ commit }, token) {
+            try {
+                let user = await axios.get('auth/myself', token);
+                commit('SET_USER_INFO', user.data);
+
+            }catch (e){
+                commit('SET_USER_INFO', null)
+            }
         }
     }
 }
